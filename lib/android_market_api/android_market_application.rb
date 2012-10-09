@@ -15,7 +15,7 @@ class AndroidMarketApplication
                 :updated, :sdk_required, :category, :downloads, :size, :content_rating, :description,
                 :screenshots, :developer_name, :icon, :update_text
 
-  @@debug=1
+  @@debug=0
   ###########################################################################################
   #  Contructor: Example Usage AndroidMarketApplication.new("com.bearstouch.smsscheduler")
   ############################################################################################
