@@ -15,7 +15,7 @@ class AndroidMarketApplication
                 :updated, :sdk_required, :category, :downloads, :size, :content_rating, :description,
                 :screenshots, :developer_name, :icon, :update_text
 
-  @@debug=0
+  @@debug=1
   ###########################################################################################
   #  Contructor: Example Usage AndroidMarketApplication.new("com.bearstouch.smsscheduler")
   ############################################################################################
@@ -92,15 +92,16 @@ class AndroidMarketApplication
   end
 
   def fill_application_name(doc)
-     element=doc.at("dl[@class='doc-metadata-list']/meta[@itemprop='name']")
+     element=doc.at("h1.doc-banner-title")
      if element
-       @name=element['content']
+       @name=element.inner_html
        puts "Application name ="+@name.to_s  if @@debug == 1
      end
   end
 
   def fill_current_version(doc)
-    element=doc.at("dd[@itemprop='softwareVersion']")
+    element=doc.at("dd[itemprop=softwareVersion]")
+		puts "soup soup, yum yum"
     if element
      @current_version=element.inner_html
      puts "Application Version="+@current_version.to_s if @@debug == 1
@@ -108,9 +109,9 @@ class AndroidMarketApplication
   end
 
   def fill_price(doc)
-    element=doc.at("meta[@itemprop='price']")
+    element=doc.at("span.buy-button-price")
     if element
-      @price=element['content']
+      @price=element.inner_html
       puts "Application Price="+@price.to_s if @@debug == 1
     end
   end
@@ -128,11 +129,11 @@ class AndroidMarketApplication
     if element
       @rating_count=element['content']
       puts "Application rating_count="+@rating_count.to_s if @@debug == 1
-    end
+span.buy-button-price    end
   end
 
   def fill_updated_at(doc)
-    element=doc.at("dl[@class='doc-metadata-list']/dd/time[@itemprop='datePublished']")
+    element=doc.at("time[@itemprop='datePublished']")
     if element
       @updated=element.inner_html
       puts "Application updated="+@updated.to_s if @@debug == 1
@@ -140,7 +141,7 @@ class AndroidMarketApplication
   end
 
   def fill_sdk_required(doc)
-    element=doc.at("dl[@class='doc-metadata-list']/dt[@itemprop='operatingSystems']")
+    element=doc.at("dt[@itemprop='operatingSystems']")
     if element
       @sdk_required=element.next_node.inner_html
       puts "Application SDK="+@sdk_required.to_s   if @@debug == 1
@@ -148,11 +149,11 @@ class AndroidMarketApplication
   end
 
   def fill_category(doc)
-    element=doc.at("dt[@itemprop='operatingSystems']")
-    if element
-      @category = element.next_node.next_node.next_node.at('a').inner_text
-      puts "Application category="+@category.to_s   if @@debug == 1
-    end
+    #element=doc.search("a[@href*='/store/apps/category/']")
+    #if element
+    #  @category = element.next_node.next_node.next_node.at('a').inner_text
+    #  puts "Application category="+@category.to_s   if @@debug == 1
+   	#end
   end
 
   def fill_downloads(doc)
@@ -188,13 +189,13 @@ class AndroidMarketApplication
   end
 
   def fill_screenshots(doc)
-    element_ar=(doc/"div[@class='screenshot-carousel-content-container']/img")
-    if element_ar
-      element_ar.each  do |img|
-        puts "addding "+img['src'].to_s if @@debug == 1
-        @screenshots.push(img['src'].to_s)
-      end
-    end
+    #element_ar=(doc/"div[@class='screenshot-carousel-content-container']/img")
+    #if element_ar
+    #  element_ar.each  do |img|
+    #    puts "addding "+img['src'].to_s if @@debug == 1
+    #    @screenshots.push(img['src'].to_s)
+    #  end
+    #end
   end
 
   def fill_developer_name(doc)
@@ -206,11 +207,11 @@ class AndroidMarketApplication
   end
 
   def fill_icon(doc)
-    element=doc.at("div[@class='doc-banner-icon']/img")
-    if element
-      @icon=element['src']
-      puts "Application Icon= "+@icon.to_s if @@debug == 1
-    end
+    #element=doc.at("div[@class='doc-banner-icon']/img")
+    #if element
+    #  @icon=element['src']
+    #  puts "Application Icon= "+@icon.to_s if @@debug == 1
+    #end
   end
 
   def fill_changed_text(doc)
@@ -224,5 +225,6 @@ class AndroidMarketApplication
   end
 
 end
+
 
 
