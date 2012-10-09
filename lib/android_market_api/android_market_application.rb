@@ -58,7 +58,7 @@ class AndroidMarketApplication
     puts " Content Rating = "+@content_rating.to_s
     puts " Application description = "+@description.to_s
     puts " Developer Name = "+@developer_name.to_s
-    puts " Icon URL = "+@icon.to_s
+    puts " Application Update= "+@update_text.to_s
     puts "-------------------------------------------------------------"
   end
 
@@ -100,8 +100,7 @@ class AndroidMarketApplication
   end
 
   def fill_current_version(doc)
-    element=doc.at("dd[itemprop=softwareVersion]")
-		puts "soup soup, yum yum"
+    element=doc.at("dd[@itemprop='softwareVersion']")
     if element
      @current_version=element.inner_html
      puts "Application Version="+@current_version.to_s if @@debug == 1
@@ -129,7 +128,7 @@ class AndroidMarketApplication
     if element
       @rating_count=element['content']
       puts "Application rating_count="+@rating_count.to_s if @@debug == 1
-span.buy-button-price    end
+		end
   end
 
   def fill_updated_at(doc)
@@ -149,11 +148,11 @@ span.buy-button-price    end
   end
 
   def fill_category(doc)
-    #element=doc.search("a[@href*='/store/apps/category/']")
-    #if element
-    #  @category = element.next_node.next_node.next_node.at('a').inner_text
-    #  puts "Application category="+@category.to_s   if @@debug == 1
-   	#end
+    element=doc.search("a[@href*='/store/apps/category/']")
+    if element
+      @category = element.inner_html
+      puts "Application category="+@category.to_s   if @@debug == 1
+   	end
   end
 
   def fill_downloads(doc)
@@ -180,7 +179,7 @@ span.buy-button-price    end
     end
   end
 
-  def fill_description(doc)
+  def fill_description(doc)a2t2.amusing.magic9ball
     element=doc.at("div[@id='doc-original-text']")
     if element
       @description=element.inner_html
@@ -215,16 +214,12 @@ span.buy-button-price    end
   end
 
   def fill_changed_text(doc)
-    element_ar=(doc/"div[@class='doc-whatsnew-container']/ol/li")
-    if element_ar
-     element_ar.each  do |parag|
-        puts "Application Update= "+parag.inner_html if @@debug == 1
-        @update_text << parag.inner_html
-     end
+    element = doc.at("div[@class='doc-whatsnew-container']")
+    if element
+			@update_text = element.inner_html
+      puts "Application Update= "+ @update_text if @@debug == 1
     end
   end
 
 end
-
-
 
