@@ -179,7 +179,7 @@ class AndroidMarketApplication
     end
   end
 
-  def fill_description(doc)a2t2.amusing.magic9ball
+  def fill_description(doc)
     element=doc.at("div[@id='doc-original-text']")
     if element
       @description=element.inner_html
